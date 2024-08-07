@@ -122,7 +122,7 @@ export class Watcher implements IDto, Omit<IEntryDto, 'ID'> {
   }
   async create() {
     if (!this.App) return false;
-    const res = await axios.post<string>(`api/watchers/${this.App}`, this.App);
+    const res = await axios.post<string>(`api/watchers/${this.App}`, this);
     return res.data === this.App;
   }
   async update() {

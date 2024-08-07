@@ -66,6 +66,9 @@
         </div>
       </md-list-item>
     </template>
+    <md-fab variant="primary" class="watcher-item-create" @click="create">
+      <md-icon slot="icon">plus</md-icon>
+    </md-fab>
   </md-list>
   <!-- <form>
     <md-filled-button>提交</md-filled-button>
@@ -97,6 +100,14 @@ const disable = async (app: string) => {
   const res = await item.disable();
   if (res) {
   }
+};
+const create = () => {
+  router.push({
+    path: '/list/detail',
+    query: {
+      mode: 'create',
+    },
+  });
 };
 const edit = (app: string) => {
   router.push({
@@ -152,6 +163,7 @@ onUnmounted(() => {
   height: 100%;
   padding: 8px;
   overflow: hidden auto;
+  position: relative;
   md-filled-icon-button {
     margin-left: 8px;
   }
@@ -190,6 +202,11 @@ onUnmounted(() => {
       $button-color: brown;
       --md-sys-color-primary: #{$button-color};
     }
+  }
+  &-create {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
   }
 }
 </style>

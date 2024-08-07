@@ -172,9 +172,24 @@ const route = useRoute();
 const sources = reactive<string[]>([]);
 const detail = ref<Watcher>(new Watcher());
 const confirm = async () => {
-  const res = await detail.value.update();
-  if (res) {
-    router.back();
+  const mode = route.query.mode as 'create' | 'update';
+  switch (mode) {
+    case 'create':
+      {
+        const res = await detail.value.create();
+        if (res) {
+          router.back();
+        }
+      }
+      break;
+    case 'update':
+      {
+        const res = await detail.value.update();
+        if (res) {
+          router.back();
+        }
+      }
+      break;
   }
 };
 const cancel = () => {
@@ -184,7 +199,7 @@ const init = async () => {
   const ds = await Datasource.list();
   sources.splice(0);
   sources.push(...ds);
-  const mode = route.query.mode as string;
+  const mode = route.query.mode as 'create' | 'update';
   if (mode === 'create') {
     detail.value = new Watcher();
     return;

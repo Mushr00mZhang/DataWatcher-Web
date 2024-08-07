@@ -1,3 +1,3 @@
 docker load <interfacewatcher_web.tar
-docker compose -p interfacewatcher-web down
-docker compose -p interfacewatcher-web up -d --remove-orphans
+docker compose -p interfacewatcher_web down
+docker compose -p interfacewatcher_web up -d --remove-orphans

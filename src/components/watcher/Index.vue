@@ -67,7 +67,7 @@
       </md-list-item>
     </template>
     <md-fab variant="primary" class="watcher-item-create" @click="create">
-      <md-icon slot="icon">plus</md-icon>
+      <md-icon slot="icon">add</md-icon>
     </md-fab>
   </md-list>
   <!-- <form>

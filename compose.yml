@@ -1,0 +1,11 @@
+services:
+  interfacewatcher_web:
+    image: interfacewatcher-web
+    container_name: interfacewatcher_web
+    ports:
+      - 3000:80
+    networks:
+      - common_bridge
+networks:
+  common_bridge:
+    external: true

@@ -1,7 +1,7 @@
 services:
-  interfacewatcher_web:
+  interfacewatcher-web:
     image: interfacewatcher-web
-    container_name: interfacewatcher_web
+    container_name: interfacewatcher-web
     ports:
       - 3000:80
     networks:

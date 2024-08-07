@@ -19,7 +19,12 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api/': 'http://localhost:8080',
+      '/interface-watcher/api': {
+        target: 'http://localhost:8080',
+        // target: 'http://10.77.11.10:3001',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/interface-watcher/, ''),
+      },
     },
   },
 });

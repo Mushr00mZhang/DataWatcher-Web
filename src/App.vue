@@ -59,6 +59,7 @@ $sider-width: 200px;
   .body {
     flex: 1;
     display: flex;
+    overflow: hidden;
     .sider {
       flex: none;
       width: 0;
@@ -77,7 +78,7 @@ $sider-width: 200px;
     .main {
       flex: 1;
       width: 100%;
-      height: calc(100% - 32px);
+      // height: calc(100% - 32px);
       overflow: hidden;
     }
   }

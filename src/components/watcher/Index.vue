@@ -175,8 +175,9 @@ onUnmounted(() => {
   }
   .watcher-item {
     flex: 1;
-    width: 320px;
+    // width: 320px;
     height: 194px;
+    min-width: 240px;
     padding: 12px;
     border-radius: 8px;
     color: var(--md-sys-color-on-primary-container);

@@ -41,6 +41,7 @@
           label="应用"
           v-model="detail.App"
           required
+          :disabled="mode === 'update'"
         />
         <md-outlined-text-field class="watcher-detail-prop" label="描述" v-model="detail.Desc" />
       </div>
@@ -136,7 +137,6 @@
         </md-outlined-select>
       </div>
     </form>
-    <md-divider />
     <div class="watcher-detail-foot">
       <md-filled-button class="watcher-detail-foot-btn" @click="confirm">
         <!-- <span>确认</span> -->
@@ -171,8 +171,8 @@ const router = useRouter();
 const route = useRoute();
 const sources = reactive<string[]>([]);
 const detail = ref<Watcher>(new Watcher());
+const mode = route.query.mode as 'create' | 'update';
 const confirm = async () => {
-  const mode = route.query.mode as 'create' | 'update';
   switch (mode) {
     case 'create':
       {
@@ -199,7 +199,6 @@ const init = async () => {
   const ds = await Datasource.list();
   sources.splice(0);
   sources.push(...ds);
-  const mode = route.query.mode as 'create' | 'update';
   if (mode === 'create') {
     detail.value = new Watcher();
     return;
@@ -222,6 +221,8 @@ $prefix-class: 'watcher-detail';
     flex: auto;
     overflow: hidden auto;
     padding: 16px;
+    color: var(--md-sys-color-on-background);
+    background-color: var(--md-sys-color-background);
   }
   &-row {
     display: flex;
@@ -254,6 +255,9 @@ $prefix-class: 'watcher-detail';
     padding: 16px;
     display: flex;
     justify-content: flex-end;
+    color: var(--md-sys-color-on-primary-container);
+    background-color: var(--md-sys-color-primary-container);
+    // box-shadow: 0 0 8px 0px var(--md-sys-color-on-primary-container);
     &-btn {
       margin-left: 8px;
     }

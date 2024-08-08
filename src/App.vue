@@ -1,16 +1,19 @@
 <template>
   <div class="container">
     <header class="head">
-      <md-icon class="toggle-sider" @click="toggleSider">settings</md-icon>
+      <md-icon class="toggle-sider" @click="toggleSider" filled>settings</md-icon>
+      <!-- <md-filled-icon-button class="toggle-sider" @click="toggleSider">
+        <md-icon filled>settings</md-icon>
+      </md-filled-icon-button> -->
     </header>
     <div class="body">
       <div :class="['sider', { actived: sider.show }]">
         <md-list class="sider-list">
           <template v-for="route in routes">
             <md-list-item>
-              <div slot="headline">
-                <RouterLink :to="route.path">{{ route?.meta?.title || route.path }}</RouterLink>
-              </div>
+              <RouterLink :to="route.path">{{ route?.meta?.title || route.path }}</RouterLink>
+              <!-- <div slot="headline">
+              </div> -->
             </md-list-item>
           </template>
         </md-list>
@@ -24,9 +27,10 @@
 <script setup lang="ts">
 import { RouterView, RouterLink } from 'vue-router';
 import { routes } from '@/router';
+import '@material/web/icon/icon';
+import '@material/web/iconbutton/filled-icon-button';
 import '@material/web/list/list';
 import '@material/web/list/list-item';
-import '@material/web/icon/icon';
 import { reactive } from 'vue';
 const sider = reactive({
   show: false,
@@ -36,7 +40,7 @@ const toggleSider = () => {
 };
 </script>
 <style lang="scss" scoped>
-$sider-width: 200px;
+$sider-width: 160px;
 .container {
   width: 100%;
   height: 100%;
@@ -49,11 +53,13 @@ $sider-width: 200px;
     display: flex;
     align-items: center;
     padding: 4px;
+    color: var(--md-sys-color-on-primary);
+    background-color: var(--md-sys-color-primary);
     .toggle-sider {
       cursor: pointer;
-      &:hover {
-        filter: brightness(1.5);
-      }
+      // &:hover {
+      //   filter: brightness(1.5);
+      // }
     }
   }
   .body {

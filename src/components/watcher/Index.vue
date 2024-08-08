@@ -1,6 +1,6 @@
 <template>
   <md-list class="watcher-list">
-    <template v-for="(item, i) in list">
+    <template v-for="item in list">
       <!-- <md-divider class="watcher-item-divider" v-if="i > 0"></md-divider> -->
       <div class="watcher-item">
         <div class="watcher-item-headline">{{ item.App }}</div>

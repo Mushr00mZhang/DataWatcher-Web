@@ -6,7 +6,7 @@
         <div class="watcher-item-headline">{{ item.App }}</div>
         <div class="watcher-item-headline">{{ item.Desc }}</div>
         <div class="watcher-item-supporting-text">
-          <!-- <div>{{ item.Desc }}</div> -->
+          <div>{{ item.System }}</div>
           <template v-if="item.EntryID !== 0">
             <div class="watcher-item-time">
               上次运行时间：{{ item.Prev?.slice(0, 19).replace('T', ' ') }}
@@ -159,7 +159,7 @@ onUnmounted(() => {
 .watcher-list {
   width: 100%;
   height: 100%;
-  padding: 8px;
+  padding: 8px 0 8px 8px;
   overflow: hidden auto;
   position: relative;
   display: flex;
@@ -176,7 +176,7 @@ onUnmounted(() => {
   .watcher-item {
     flex: 1;
     // width: 320px;
-    height: 194px;
+    height: auto;
     min-width: 240px;
     padding: 12px;
     border-radius: 8px;

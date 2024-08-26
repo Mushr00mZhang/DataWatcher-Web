@@ -62,6 +62,20 @@ interface IEntryDto {
   /** 下次运行时间 */
   Next: string;
 }
+interface IDataDto {
+  Datasource: string;
+  WatcherConfig: IDto;
+  /** 时间戳 */
+  '@timestamp': string;
+  /** 呆滞一天 */
+  Expire1Day: number;
+  /** 呆滞一周 */
+  Expire1Week: number;
+  /** 呆滞一月 */
+  Expire1Month: number;
+  /** 扩展数据 */
+  External: any;
+}
 export class Watcher implements IDto, Omit<IEntryDto, 'ID'> {
   Module: string = '';
   System: string = '';
@@ -167,6 +181,12 @@ export class Watcher implements IDto, Omit<IEntryDto, 'ID'> {
       this.EntryID = 0;
     }
     return res.data === this.App;
+  }
+  static async dataPreview(app: string, datasourceCode: string) {
+    const url = `api/watchers/${app}/data-preview?datasourceCode=${datasourceCode}`;
+    const res = await axios.get<IDataDto[]>(url);
+    if (res && res.data instanceof Array) return res.data;
+    return [];
   }
   static async entries(apps: string[] = []) {
     const res = await axios.get<IEntryDto[]>(`api/watchers/entries`, {

@@ -20,6 +20,14 @@
           <div>运行平均时长：{{ item.DurationAvg }}ms</div>
         </div>
         <div class="watcher-item-operates">
+          <md-filled-icon-button
+            v-if="item.GetExpired"
+            class="watcher-item-operate watcher-item-operate-data-preview"
+            title="预览数据"
+            @click="dataPreview(item)"
+          >
+            <md-icon filled>play_arrow</md-icon>
+          </md-filled-icon-button>
           <template v-if="item.Enabled">
             <md-filled-icon-button
               v-if="!!item.EntryID"
@@ -71,10 +79,25 @@
   <!-- <form>
     <md-filled-button>提交</md-filled-button>
   </form> -->
+  <md-dialog :open="dialog.open" @close="dialog.open = false">
+    <template v-if="dialog.open && dialog.type === 'detail'">
+      <div slot="headline">{{ dialog.app ? `更新${dialog.app}` : '创建' }}</div>
+      <div slot="content">
+        <Detail :app="dialog.app" :mode="dialog.mode" @close="dialog.open = false" />
+      </div>
+    </template>
+    <template v-if="dialog.open && dialog.type === 'data-preview'">
+      <div slot="headline">{{ dialog.app }}数据预览</div>
+      <div slot="content">
+        <DataPreview :app="dialog.app" :datasources="dialog.sources" />
+      </div>
+    </template>
+  </md-dialog>
 </template>
 <script setup lang="ts">
 import { Watcher } from '@/models/watcher';
 import '@material/web/checkbox/checkbox';
+import '@material/web/dialog/dialog';
 import '@material/web/divider/divider';
 import '@material/web/fab/fab';
 import '@material/web/icon/icon';
@@ -82,9 +105,17 @@ import '@material/web/iconbutton/filled-icon-button';
 import '@material/web/list/list';
 import '@material/web/list/list-item';
 import { onUnmounted, reactive } from 'vue';
-import { useRouter } from 'vue-router';
-const router = useRouter();
+import Detail from '@/components/watcher/Detail.vue';
+import DataPreview from '@/components/watcher/DataPreview.vue';
 const list = reactive<Watcher[]>([]);
+const dialog = reactive({
+  open: false,
+  type: null as 'detail' | 'data-preview' | null,
+  app: '',
+  mode: 'create' as 'create' | 'update',
+  sources: [] as string[],
+  watcher: null as Watcher | null,
+});
 const enable = async (app: string) => {
   const item = list.find((i) => i.App === app);
   if (!item) return;
@@ -100,21 +131,29 @@ const disable = async (app: string) => {
   }
 };
 const create = () => {
-  router.push({
-    path: '/list/detail',
-    query: {
-      mode: 'create',
-    },
-  });
+  dialog.open = true;
+  dialog.type = 'detail';
+  dialog.app = '';
+  dialog.mode = 'create';
+  // router.push({
+  //   path: '/list/detail',
+  //   query: {
+  //     mode: 'create',
+  //   },
+  // });
 };
 const edit = (app: string) => {
-  router.push({
-    path: '/list/detail',
-    query: {
-      app,
-      mode: 'update',
-    },
-  });
+  dialog.open = true;
+  dialog.type = 'detail';
+  dialog.app = app;
+  dialog.mode = 'update';
+  // router.push({
+  //   path: '/list/detail',
+  //   query: {
+  //     app,
+  //     mode: 'update',
+  //   },
+  // });
 };
 const start = async (app: string) => {
   const item = list.find((i) => i.App === app);
@@ -129,6 +168,12 @@ const stop = async (app: string) => {
   const res = await item.stop();
   if (res) {
   }
+};
+const dataPreview = (watcher: Watcher) => {
+  dialog.open = true;
+  dialog.type = 'data-preview';
+  dialog.app = watcher.App;
+  dialog.sources = watcher.Sources;
 };
 let loop = 0;
 /** 更新间隔(ms) */

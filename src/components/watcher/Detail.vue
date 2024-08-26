@@ -153,7 +153,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { Watcher } from '@/models/watcher';
-import { useRoute, useRouter } from 'vue-router';
 import '@material/web/button/outlined-button';
 import '@material/web/button/filled-button';
 import '@material/web/checkbox/checkbox';
@@ -167,18 +166,15 @@ import '@material/web/switch/switch';
 import '@material/web/textfield/outlined-text-field';
 import { Types, Methods, Tags } from '@/models/watcher';
 import { Datasource } from '@/models/datasource';
-const router = useRouter();
-const route = useRoute();
 const sources = reactive<string[]>([]);
 const detail = ref<Watcher>(new Watcher());
-const mode = route.query.mode as 'create' | 'update';
 const confirm = async () => {
-  switch (mode) {
+  switch (props.mode) {
     case 'create':
       {
         const res = await detail.value.create();
         if (res) {
-          router.back();
+          emit('close');
         }
       }
       break;
@@ -186,27 +182,38 @@ const confirm = async () => {
       {
         const res = await detail.value.update();
         if (res) {
-          router.back();
+          emit('close');
         }
       }
       break;
   }
 };
 const cancel = () => {
-  router.back();
+  emit('close');
 };
 const init = async () => {
   const ds = await Datasource.list();
   sources.splice(0);
   sources.push(...ds);
-  if (mode === 'create') {
+  if (props.mode === 'create') {
     detail.value = new Watcher();
     return;
   }
-  const app = route.query.app as string;
-  const res = await Watcher.get(app);
+  const res = await Watcher.get(props.app);
   if (res) detail.value = res;
 };
+type Props = {
+  app: string;
+  mode: 'create' | 'update';
+};
+const props = withDefaults(defineProps<Props>(), {
+  app: '',
+  mode: 'create',
+});
+type Emits = {
+  close: [];
+};
+const emit = defineEmits<Emits>();
 init();
 </script>
 <style lang="scss" scoped>

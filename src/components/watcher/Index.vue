@@ -26,7 +26,7 @@
             title="预览数据"
             @click="dataPreview(item)"
           >
-            <md-icon filled>play_arrow</md-icon>
+            <md-icon filled>preview</md-icon>
           </md-filled-icon-button>
           <template v-if="item.Enabled">
             <md-filled-icon-button
@@ -79,7 +79,11 @@
   <!-- <form>
     <md-filled-button>提交</md-filled-button>
   </form> -->
-  <md-dialog :open="dialog.open" @close="dialog.open = false">
+  <md-dialog
+    :open="dialog.open"
+    @close="dialog.open = false"
+    :class="['watcher-list-dialog', `watcher-list-dialog-${dialog.type}`]"
+  >
     <template v-if="dialog.open && dialog.type === 'detail'">
       <div slot="headline">{{ dialog.app ? `更新${dialog.app}` : '创建' }}</div>
       <div slot="content">
@@ -91,6 +95,9 @@
       <div slot="content">
         <DataPreview :app="dialog.app" :datasources="dialog.sources" />
       </div>
+    </template>
+    <template v-if="dialog.type === 'delete-confirm'">
+      <div slot="content">确认删除？</div>
     </template>
   </md-dialog>
 </template>
@@ -110,7 +117,7 @@ import DataPreview from '@/components/watcher/DataPreview.vue';
 const list = reactive<Watcher[]>([]);
 const dialog = reactive({
   open: false,
-  type: null as 'detail' | 'data-preview' | null,
+  type: null as 'detail' | 'data-preview' | 'delete-confirm' | null,
   app: '',
   mode: 'create' as 'create' | 'update',
   sources: [] as string[],
@@ -271,6 +278,10 @@ onUnmounted(() => {
       align-items: flex-end;
     }
     &-operate {
+      &-data-preview {
+        $button-color: burlywood;
+        --md-sys-color-primary: #{$button-color};
+      }
       &-start,
       &-started {
         $button-color: cadetblue;
@@ -300,6 +311,13 @@ onUnmounted(() => {
       position: fixed;
       bottom: 32px;
       right: 32px;
+    }
+  }
+  &-dialog {
+    &-detail {
+      width: auto;
+      max-width: min(800px, 100% - 48px);
+      max-height: min(80%, 100% - 48px);
     }
   }
 }

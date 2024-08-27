@@ -228,8 +228,8 @@ $prefix-class: 'watcher-detail';
     flex: auto;
     overflow: hidden auto;
     padding: 16px;
-    color: var(--md-sys-color-on-background);
-    background-color: var(--md-sys-color-background);
+    // color: var(--md-sys-color-on-background);
+    // background-color: var(--md-sys-color-background);
   }
   &-row {
     display: flex;
@@ -263,7 +263,7 @@ $prefix-class: 'watcher-detail';
     display: flex;
     justify-content: flex-end;
     color: var(--md-sys-color-on-primary-container);
-    background-color: var(--md-sys-color-primary-container);
+    // background-color: var(--md-sys-color-primary-container);
     // box-shadow: 0 0 8px 0px var(--md-sys-color-on-primary-container);
     &-btn {
       margin-left: 8px;

@@ -62,7 +62,7 @@ interface IEntryDto {
   /** 下次运行时间 */
   Next: string;
 }
-interface IDataDto {
+export interface IDataDto {
   Datasource: string;
   WatcherConfig: IDto;
   /** 时间戳 */
@@ -74,7 +74,7 @@ interface IDataDto {
   /** 呆滞一月 */
   Expire1Month: number;
   /** 扩展数据 */
-  External: any;
+  Extend: any;
 }
 export class Watcher implements IDto, Omit<IEntryDto, 'ID'> {
   Module: string = '';
